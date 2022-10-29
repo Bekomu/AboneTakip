@@ -15,6 +15,10 @@ namespace AboneTakip.DataAccess.EntitiyFramework.Context
     public class AboneTakipDbContext : DbContext
     {
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Reading> Readings { get; set; }
+        public DbSet<Volumetric> Volumetrics { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -85,5 +89,5 @@ namespace AboneTakip.DataAccess.EntitiyFramework.Context
         }
     }
 
-    
+
 }

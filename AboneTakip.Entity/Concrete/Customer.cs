@@ -10,11 +10,13 @@ namespace AboneTakip.Entity.Concrete
 {
     public class Customer : BaseEntity
     {
-        public DateTime AccountCreateDate { get; set; }
+        public DateTime SubscribedDate { get; set; }
         public string Adress { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public Currency Currency { get; set; }
         public KDVRate KDVRate { get; set; }
+
+        public Usage UsageInfo { get; set; }
     }
 }
