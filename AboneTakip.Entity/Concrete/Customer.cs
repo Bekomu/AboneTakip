@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AboneTakip.Entity.Concrete
 {
-    public class Abone : BaseEntity
+    public class Customer : BaseEntity
     {
         public DateTime AccountCreateDate { get; set; }
         public string Adress { get; set; }
