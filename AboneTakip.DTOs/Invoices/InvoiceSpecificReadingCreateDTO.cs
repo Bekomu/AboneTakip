@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace AboneTakip.DTOs.Invoices
 {
-    public class InvoiceDTO
+    public class InvoiceSpecificReadingCreateDTO
     {
-        public decimal InvoiceAmount { get; set; }
-        public decimal TotalUsage { get; set; }
-        public decimal VolumetricPreload { get; set; }
         public DateTime FirstReading { get; set; }
         public DateTime LastReading { get; set; }
-        public Guid CustomerId { get; set; }
+        public Guid ReadingId { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace AboneTakip.DTOs.Readings
         public virtual Guid CustomerId { get; set; }
         public decimal FirstIndex { get; set; }
         public decimal LastIndex { get; set; }
+        public bool IsInvoiced { get; set; }
     }
 }

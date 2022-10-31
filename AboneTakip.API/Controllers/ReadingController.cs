@@ -84,6 +84,24 @@ namespace AboneTakip.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetCustomerNotInvoicedReadings")]
+        public async Task<IActionResult> GetCustomerNotInvoicedReadings(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _readingService.GetCustomerNotInvoicedReadings(id);
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
         [HttpGet("GetAllReadings")]
         public async Task<IActionResult> GetAll()
         {

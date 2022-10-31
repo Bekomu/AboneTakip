@@ -1,6 +1,7 @@
 ﻿using AboneTakip.Core.Entities.Abstract;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,8 @@ namespace AboneTakip.Entity.Concrete
         public DateTime LastReading { get; set; }   
         public decimal DailyAverageUsage { get; set; }
 
-        public Guid CustomerId { get; set; }
+        [ForeignKey("Customer")]
+        public virtual Guid CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
     }
 }

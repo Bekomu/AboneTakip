@@ -104,7 +104,26 @@ namespace AboneTakip.Business.Concrete
             return new DataResult<List<ReadingDTO>>(ResultStatus.Success, readingDtos);
         }
 
-        public async Task<IResult> Update(ReadingUpdateDTO readingUpdateDTO)
+        public async Task<IDataResult<List<ReadingDTO>>> GetCustomerNotInvoicedReadings(Guid customerId)
+        {
+            var customer = await _customerRepository.GetById(customerId);
+
+            if (customer == null)
+            {
+                return new DataResult<List<ReadingDTO>>(ResultStatus.Error, "Customer not found.", null);
+            }
+
+            if (!customer.Readings.Any())
+            {
+                return new DataResult<List<ReadingDTO>>(ResultStatus.Error, "There are no readings on this customer.", null);
+            }
+
+            var readingDtos = _mapper.Map<List<ReadingDTO>>(customer.Readings.Where(x => x.IsInvoiced == false).ToList());
+
+            return new DataResult<List<ReadingDTO>>(ResultStatus.Success, readingDtos);
+        }
+
+        public async Task<IDataResult<ReadingDTO>> Update(ReadingUpdateDTO readingUpdateDTO)
         {
             var reading = await _readingRepository.GetById(readingUpdateDTO.Id);
             var updateReading = _mapper.Map(readingUpdateDTO, reading);

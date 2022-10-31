@@ -12,6 +12,7 @@ namespace AboneTakip.Entity.Concrete
     {
         public decimal FirstIndex { get; set; }
         public decimal LastIndex { get; set; }
+        public bool IsInvoiced { get; set; }
 
         [ForeignKey("Customer")]
         public virtual Guid CustomerId { get; set; }

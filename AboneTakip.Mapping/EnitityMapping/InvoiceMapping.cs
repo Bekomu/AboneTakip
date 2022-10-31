@@ -15,7 +15,6 @@ namespace AboneTakip.Mapping.EnitityMapping
         {
             base.Configure(builder);
             builder.Property(x => x.InvoiceAmount).IsRequired(true);
-            builder.HasOne(x => x.Customer).WithMany().IsRequired(true);
         }
     }
 }

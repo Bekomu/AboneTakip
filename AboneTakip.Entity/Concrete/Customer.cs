@@ -18,7 +18,8 @@ namespace AboneTakip.Entity.Concrete
         public Currency Currency { get; set; }
         public KDVRate KDVRate { get; set; }
 
-        public virtual List<Volumetric> VolumeUsage { get; set; } = new List<Volumetric> { };
-        public virtual List<Reading> Readings { get; set; } = new List<Reading> { };
+        public virtual List<Volumetric> VolumeUsage { get; set; }
+        public virtual List<Reading> Readings { get; set; }
+        public virtual List<Invoice> Invoices { get; set; }
     }
 }

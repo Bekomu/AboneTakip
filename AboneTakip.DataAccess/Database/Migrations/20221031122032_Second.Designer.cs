@@ -4,6 +4,7 @@ using AboneTakip.DataAccess.EntitiyFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AboneTakip.DataAccess.Database.Migrations
 {
     [DbContext(typeof(AboneTakipDbContext))]
-    partial class AboneTakipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221031122032_Second")]
+    partial class Second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,6 +101,9 @@ namespace AboneTakip.DataAccess.Database.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CustomerId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("DailyAverageUsage")
                         .HasColumnType("decimal(18,2)");
 
@@ -136,6 +141,8 @@ namespace AboneTakip.DataAccess.Database.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("CustomerId1");
+
                     b.ToTable("Invoices");
                 });
 
@@ -163,9 +170,6 @@ namespace AboneTakip.DataAccess.Database.Migrations
 
                     b.Property<decimal>("FirstIndex")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsInvoiced")
-                        .HasColumnType("bit");
 
                     b.Property<decimal>("LastIndex")
                         .HasColumnType("decimal(18,2)");
@@ -233,10 +237,14 @@ namespace AboneTakip.DataAccess.Database.Migrations
             modelBuilder.Entity("AboneTakip.Entity.Concrete.Invoice", b =>
                 {
                     b.HasOne("AboneTakip.Entity.Concrete.Customer", "Customer")
-                        .WithMany("Invoices")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AboneTakip.Entity.Concrete.Customer", null)
+                        .WithMany("Invoices")
+                        .HasForeignKey("CustomerId1");
 
                     b.Navigation("Customer");
                 });

@@ -4,6 +4,7 @@ using AboneTakip.DataAccess.EntitiyFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AboneTakip.DataAccess.Database.Migrations
 {
     [DbContext(typeof(AboneTakipDbContext))]
-    partial class AboneTakipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221031122254_Third")]
+    partial class Third
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,9 +165,6 @@ namespace AboneTakip.DataAccess.Database.Migrations
 
                     b.Property<decimal>("FirstIndex")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsInvoiced")
-                        .HasColumnType("bit");
 
                     b.Property<decimal>("LastIndex")
                         .HasColumnType("decimal(18,2)");

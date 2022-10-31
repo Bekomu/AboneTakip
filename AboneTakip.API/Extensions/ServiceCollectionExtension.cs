@@ -13,12 +13,18 @@ namespace AboneTakip.API.Extensions
         {
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IReadingRepository, ReadingRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            services.AddScoped<IVolumetricRepository, VolumetricRepository>();
         }
 
         public static void AddBusinessServices(this IServiceCollection services)
         {
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IReadingService, ReadingService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
+
+
+            services.AddScoped<IEnergyPriceService, EnergyPriceService>();
         }
 
         public static IServiceCollection AddCustomFluentValidation(this IServiceCollection services)
