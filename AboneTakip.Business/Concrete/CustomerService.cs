@@ -42,7 +42,7 @@ namespace AboneTakip.Business.Concrete
             }
             await _customerRepository.Delete(customer);
 
-            return new Result(ResultStatus.Success, message: $"Customer {customer.Name} {customer.Surname} deleted.");
+            return new Result(ResultStatus.Success, message: $"Customer {customer.Name} {customer.Surname} ({customer.Id}) deleted.");
         }
 
         public async Task<IDataResult<List<CustomerDTO>>> GetAll()
@@ -69,10 +69,18 @@ namespace AboneTakip.Business.Concrete
         {
             var customer = await _customerRepository.GetById(customerUpdateDTO.Id);
             var updateCustomer = _mapper.Map(customerUpdateDTO, customer);
-            await _customerRepository.Update(updateCustomer);
+            try
+            {
+                await _customerRepository.Update(updateCustomer);
+            }
+            catch (Exception)
+            {
+                return new DataResult<CustomerDTO>(ResultStatus.Error, "Error occured when updating customer properties. Are you missing UsageInfo or etc. ? If it's null, you should remove UsageInfoId line from request body.", null);
+            }
+
             var updatedCustomerDto = _mapper.Map<CustomerDTO>(updateCustomer);
 
-            return new DataResult<CustomerDTO>(ResultStatus.Success, updatedCustomerDto);
+            return new DataResult<CustomerDTO>(ResultStatus.Success, "Customer properties succesfully updated.", updatedCustomerDto);
         }
     }
 }

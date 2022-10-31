@@ -14,6 +14,8 @@ namespace AboneTakip.Business.AutoMapper.Profiles
         public ReadingProfile()
         {
             CreateMap<ReadingDTO, Reading>().ReverseMap();
+            CreateMap<ReadingCreateDTO, Reading>();
+            CreateMap<ReadingUpdateDTO, Reading>();
         }
     }
 }

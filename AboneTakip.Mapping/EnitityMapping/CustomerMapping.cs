@@ -16,6 +16,7 @@ namespace AboneTakip.Mapping.EnitityMapping
             base.Configure(builder);
             builder.Property(x => x.SubscribedDate).IsRequired(true);
             builder.Property(x => x.Adress).IsRequired(true).HasMaxLength(255);
+            builder.Property(x => x.Phone).IsRequired(true).HasPrecision(14, 0);
             builder.Property(x => x.Name).IsRequired(true).HasMaxLength(50);
             builder.Property(x => x.Surname).IsRequired(true).HasMaxLength(50);
             builder.Property(x => x.Currency).IsRequired(true);

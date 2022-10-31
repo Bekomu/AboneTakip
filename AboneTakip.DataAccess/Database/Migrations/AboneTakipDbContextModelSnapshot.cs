@@ -63,6 +63,10 @@ namespace AboneTakip.DataAccess.Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<decimal>("Phone")
+                        .HasPrecision(14)
+                        .HasColumnType("decimal(14,0)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -74,12 +78,7 @@ namespace AboneTakip.DataAccess.Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("UsageInfoId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsageInfoId");
 
                     b.ToTable("Customers");
                 });
@@ -153,6 +152,9 @@ namespace AboneTakip.DataAccess.Database.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -174,49 +176,11 @@ namespace AboneTakip.DataAccess.Database.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("UsageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UsageId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Readings");
-                });
-
-            modelBuilder.Entity("AboneTakip.Entity.Concrete.Usage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Usage");
                 });
 
             modelBuilder.Entity("AboneTakip.Entity.Concrete.Volumetric", b =>
@@ -231,6 +195,9 @@ namespace AboneTakip.DataAccess.Database.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
@@ -253,23 +220,11 @@ namespace AboneTakip.DataAccess.Database.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("UsageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UsageId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Volumetrics");
-                });
-
-            modelBuilder.Entity("AboneTakip.Entity.Concrete.Customer", b =>
-                {
-                    b.HasOne("AboneTakip.Entity.Concrete.Usage", "UsageInfo")
-                        .WithMany()
-                        .HasForeignKey("UsageInfoId");
-
-                    b.Navigation("UsageInfo");
                 });
 
             modelBuilder.Entity("AboneTakip.Entity.Concrete.Invoice", b =>
@@ -285,19 +240,27 @@ namespace AboneTakip.DataAccess.Database.Migrations
 
             modelBuilder.Entity("AboneTakip.Entity.Concrete.Reading", b =>
                 {
-                    b.HasOne("AboneTakip.Entity.Concrete.Usage", null)
+                    b.HasOne("AboneTakip.Entity.Concrete.Customer", "Customer")
                         .WithMany("Readings")
-                        .HasForeignKey("UsageId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("AboneTakip.Entity.Concrete.Volumetric", b =>
                 {
-                    b.HasOne("AboneTakip.Entity.Concrete.Usage", null)
+                    b.HasOne("AboneTakip.Entity.Concrete.Customer", "Customer")
                         .WithMany("VolumeUsage")
-                        .HasForeignKey("UsageId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("AboneTakip.Entity.Concrete.Usage", b =>
+            modelBuilder.Entity("AboneTakip.Entity.Concrete.Customer", b =>
                 {
                     b.Navigation("Readings");
 

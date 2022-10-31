@@ -16,6 +16,7 @@ namespace AboneTakip.Mapping.EnitityMapping
             base.Configure(builder);
             builder.Property(x => x.FirstIndex).IsRequired(true);
             builder.Property(x => x.LastIndex).IsRequired(true);
+
         }
     }
 }

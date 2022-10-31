@@ -10,9 +10,12 @@ namespace AboneTakip.DTOs.Customers
     {
         public Guid Id { get; set; }
         public string Adress { get; set; }
+        public decimal Phone { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Currency { get; set; }
         public int KDVRate { get; set; }
+
+        public Guid? UsageInfoId { get; set; }
     }
 }

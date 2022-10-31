@@ -17,10 +17,9 @@ namespace AboneTakip.API.Controllers
             _customerService = customerService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllCustomers")]
         public async Task<IActionResult> GetAll()
         {
-            // TODO : tümünü çekecesin.
             var result = await _customerService.GetAll();
 
             if(result.ResultStatus != ResultStatus.Success)
@@ -34,7 +33,6 @@ namespace AboneTakip.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            // TODO : bir tane abone çekeceksin.
             var result = await _customerService.GetById(id);
 
             if (result.ResultStatus != ResultStatus.Success)
@@ -45,10 +43,9 @@ namespace AboneTakip.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("AddCustomer")]
         public async Task<IActionResult> Add(CustomerCreateDTO customerCreateDTO)
         {
-            // TODO: frombody den dto çekeceksin. burada ekleyeceksin.
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -59,12 +56,30 @@ namespace AboneTakip.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update()
+        [HttpPut("UpdateCustomer")]
+        public async Task<IActionResult> Update(CustomerUpdateDTO customerUpdateDTO)
         {
-            // TODO: frombody den dto çekeceksin. burada update edeceksin.
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            return Ok();
+            var result = await _customerService.Update(customerUpdateDTO);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _customerService.Delete(id);
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
         }
     }
 }

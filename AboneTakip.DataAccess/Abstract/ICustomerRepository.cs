@@ -10,5 +10,6 @@ namespace AboneTakip.DataAccess.Abstract
 {
     public interface ICustomerRepository : IRepository<Customer>
     {
+
     }
 }
