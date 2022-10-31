@@ -14,6 +14,8 @@ namespace AboneTakip.DataAccess.EntitiyFramework.Context
 
     public class AboneTakipDbContext : DbContext
     {
+        public AboneTakipDbContext(DbContextOptions<AboneTakipDbContext> options) : base(options) { }
+
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Reading> Readings { get; set; }
         public DbSet<Volumetric> Volumetrics { get; set; }

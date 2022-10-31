@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboneTakip.API", "AboneTakip.API\AboneTakip.API.csproj", "{664A993B-5AB4-4C2A-833B-3C20D5CDE3FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboneTakip.API", "AboneTakip.API\AboneTakip.API.csproj", "{664A993B-5AB4-4C2A-833B-3C20D5CDE3FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboneTakip.Business", "AboneTakip.Business\AboneTakip.Business.csproj", "{E80D7DAB-EBF2-4380-81FC-9A4730236333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboneTakip.Business", "AboneTakip.Business\AboneTakip.Business.csproj", "{E80D7DAB-EBF2-4380-81FC-9A4730236333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboneTakip.Core", "AboneTakip.Core\AboneTakip.Core.csproj", "{DA5790C1-5A3F-4C7E-B847-892230365154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboneTakip.Core", "AboneTakip.Core\AboneTakip.Core.csproj", "{DA5790C1-5A3F-4C7E-B847-892230365154}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboneTakip.DataAccess", "AboneTakip.DataAccess\AboneTakip.DataAccess.csproj", "{2B00E685-A9F3-4E53-9B52-356DB0A58660}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboneTakip.DataAccess", "AboneTakip.DataAccess\AboneTakip.DataAccess.csproj", "{2B00E685-A9F3-4E53-9B52-356DB0A58660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboneTakip.DTOs", "AboneTakip.DTOs\AboneTakip.DTOs.csproj", "{D1F91D45-9481-4C7F-B8EA-1292405531BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboneTakip.DTOs", "AboneTakip.DTOs\AboneTakip.DTOs.csproj", "{D1F91D45-9481-4C7F-B8EA-1292405531BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboneTakip.Entity", "AboneTakip.Entity\AboneTakip.Entity.csproj", "{8C60BA88-8906-4F3E-B436-73D7FB5CEEBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboneTakip.Entity", "AboneTakip.Entity\AboneTakip.Entity.csproj", "{8C60BA88-8906-4F3E-B436-73D7FB5CEEBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboneTakip.Mapping", "AboneTakip.Mapping\AboneTakip.Mapping.csproj", "{47884071-564F-475C-BA2E-88E9C0FBBB46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AboneTakip.Mapping", "AboneTakip.Mapping\AboneTakip.Mapping.csproj", "{47884071-564F-475C-BA2E-88E9C0FBBB46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

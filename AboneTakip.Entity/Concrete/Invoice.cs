@@ -15,6 +15,8 @@ namespace AboneTakip.Entity.Concrete
         public DateTime FirstReading { get; set; }
         public DateTime LastReading { get; set; }   
         public decimal DailyAverageUsage { get; set; }
-        public Customer Customer { get; set; }
+
+        public Guid CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

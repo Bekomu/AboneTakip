@@ -17,6 +17,7 @@ namespace AboneTakip.Entity.Concrete
         public Currency Currency { get; set; }
         public KDVRate KDVRate { get; set; }
 
-        public Usage UsageInfo { get; set; }
+        public Guid? UsageInfoId { get; set; }
+        public virtual Usage? UsageInfo { get; set; }
     }
 }

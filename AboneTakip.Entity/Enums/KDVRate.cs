@@ -8,8 +8,8 @@ namespace AboneTakip.Entity.Enums
 {
     public enum KDVRate
     {
-        YuzdeBir = 1,
-        YuzdeSekiz = 8,
-        YuzdeOnsekiz = 18
+        onePercent = 1,
+        eightPercent = 8,
+        eighteenPrecent = 18
     }
 }

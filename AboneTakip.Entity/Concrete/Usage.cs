@@ -9,8 +9,8 @@ namespace AboneTakip.Entity.Concrete
 {
     public class Usage : BaseEntity
     {
-        public List<Volumetric> VolumeUsage { get; set; }
+        public virtual List<Volumetric> VolumeUsage { get; set; }
         
-        public List<Reading> Readings { get; set; }
+        public virtual List<Reading> Readings { get; set; }
     }
 }
