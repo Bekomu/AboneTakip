@@ -8,6 +8,7 @@ namespace AboneTakip.DTOs.Invoices
 {
     public class InvoiceDTO
     {
+        public Guid Id { get; set; }
         public decimal InvoiceAmount { get; set; }
         public decimal TotalUsage { get; set; }
         public decimal VolumetricPreload { get; set; }

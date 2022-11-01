@@ -18,7 +18,7 @@ namespace AboneTakip.API.Controllers
         }
 
         [HttpGet("GetAllCustomers")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllCustomers()
         {
             var result = await _customerService.GetAll();
 
@@ -30,8 +30,8 @@ namespace AboneTakip.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        [HttpGet("GetCustomerById")]
+        public async Task<IActionResult> GetCustomerById(Guid id)
         {
             var result = await _customerService.GetById(id);
 
@@ -44,7 +44,7 @@ namespace AboneTakip.API.Controllers
         }
 
         [HttpPost("AddCustomer")]
-        public async Task<IActionResult> Add(CustomerCreateDTO customerCreateDTO)
+        public async Task<IActionResult> AddCustomer(CustomerCreateDTO customerCreateDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace AboneTakip.API.Controllers
         }
 
         [HttpPut("UpdateCustomer")]
-        public async Task<IActionResult> Update(CustomerUpdateDTO customerUpdateDTO)
+        public async Task<IActionResult> UpdateCustomer(CustomerUpdateDTO customerUpdateDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -69,8 +69,8 @@ namespace AboneTakip.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        [HttpDelete("DeleteCustomer")]
+        public async Task<IActionResult> DeleteCustomer(Guid id)
         {
             var result = await _customerService.Delete(id);
 

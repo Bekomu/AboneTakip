@@ -22,7 +22,7 @@ namespace AboneTakip.API.Extensions
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IReadingService, ReadingService>();
             services.AddScoped<IInvoiceService, InvoiceService>();
-
+            services.AddScoped<IVolumetricService, VolumetricService>();
 
             services.AddScoped<IEnergyPriceService, EnergyPriceService>();
         }

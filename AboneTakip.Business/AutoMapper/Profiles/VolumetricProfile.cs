@@ -14,6 +14,8 @@ namespace AboneTakip.Business.AutoMapper.Profiles
         public VolumetricProfile()
         {
             CreateMap<VolumetricDTO, Volumetric>().ReverseMap();
+            CreateMap<VolumetricCreateDTO, Volumetric>();
+            CreateMap<VolumetricUpdateDTO, Volumetric>().ReverseMap();
         }
     }
 }

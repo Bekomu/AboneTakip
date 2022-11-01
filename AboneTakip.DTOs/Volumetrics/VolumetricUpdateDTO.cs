@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace AboneTakip.DTOs.Volumetrics
 {
-    public class VolumetricDTO
+    public class VolumetricUpdateDTO
     {
         public Guid Id { get; set; }
         public decimal LastIndex { get; set; }
         public decimal PreloadVolume { get; set; }
         public bool IsInvoiced { get; set; }
         public virtual Guid CustomerId { get; set; }
-        public DateTime CreatedDate { get; set; }
-
     }
 }

@@ -12,6 +12,8 @@ namespace AboneTakip.Entity.Concrete
     {
         public decimal LastIndex { get; set; }
         public decimal PreloadVolume { get; set; }
+        public bool IsInvoiced { get; set; }
+
 
         [ForeignKey("Customer")]
         public virtual Guid CustomerId { get; set; }

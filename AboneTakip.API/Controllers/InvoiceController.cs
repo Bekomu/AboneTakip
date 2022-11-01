@@ -17,8 +17,47 @@ namespace AboneTakip.API.Controllers
             _invoiceService = invoiceService;
         }
 
-        [HttpPost("CreateInvoiceByUsage")]
-        public async Task<IActionResult> CreateInvoiceByUsage(InvoiceAllReadingsCreateDTO invoiceCreateDTO)
+        [HttpGet("GetAllInvoices")]
+        public async Task<IActionResult> GetAllInvoices()
+        {
+            var result = await _invoiceService.GetAll();
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _invoiceService.GetById(id);
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetInvoicesByCustomerId")]
+        public async Task<IActionResult> GetInvoicesByCustomerId(Guid id)
+        {
+            var result = await _invoiceService.GetByCustomerId(id);
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("CreateInvoiceByCustomerUsage")]
+        public async Task<IActionResult> CreateInvoiceByCustomerUsage(InvoiceAllReadingsCreateDTO invoiceCreateDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -44,6 +83,32 @@ namespace AboneTakip.API.Controllers
             }
 
             var result = await _invoiceService.AddByReading(invoiceSpecificReadingCreateDTO);
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPut("UpdateInvoice")]
+        public async Task<IActionResult> UpdateInvoice(InvoiceUpdateDTO invoiceUpdateDTO)
+        {
+            var result = await _invoiceService.Update(invoiceUpdateDTO);
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpDelete("DeleteInvoice")]
+        public async Task<IActionResult> DeleteInvoice(Guid id)
+        {
+            var result = await _invoiceService.Delete(id);
 
             if (result.ResultStatus != ResultStatus.Success)
             {

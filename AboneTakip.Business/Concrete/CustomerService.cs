@@ -24,6 +24,7 @@ namespace AboneTakip.Business.Concrete
             _mapper = mapper;
         }
 
+
         public async Task<IDataResult<CustomerDTO>> Add(CustomerCreateDTO customerCreateDTO)
         {
             var createCustomer = _mapper.Map<Customer>(customerCreateDTO);
@@ -32,6 +33,7 @@ namespace AboneTakip.Business.Concrete
 
             return new DataResult<CustomerDTO>(ResultStatus.Success, result);
         }
+
 
         public async Task<IResult> Delete(Guid id)
         {
@@ -45,6 +47,7 @@ namespace AboneTakip.Business.Concrete
             return new Result(ResultStatus.Success, message: $"Customer {customer.Name} {customer.Surname} ({customer.Id}) deleted.");
         }
 
+
         public async Task<IDataResult<List<CustomerDTO>>> GetAll()
         {
             var customers = await _customerRepository.GetAll();
@@ -52,6 +55,7 @@ namespace AboneTakip.Business.Concrete
 
             return new DataResult<List<CustomerDTO>>(ResultStatus.Success, customerDTOs);
         }
+
 
         public async Task<IDataResult<CustomerDTO>> GetById(Guid id)
         {
@@ -64,6 +68,7 @@ namespace AboneTakip.Business.Concrete
 
             return new DataResult<CustomerDTO>(ResultStatus.Success, customerDTO);
         }
+
 
         public async Task<IDataResult<CustomerDTO>> Update(CustomerUpdateDTO customerUpdateDTO)
         {

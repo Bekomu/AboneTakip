@@ -22,6 +22,7 @@ namespace AboneTakip.Business.Concrete
             _mapper = mapper;
         }
 
+
         public async Task<IDataResult<ReadingDTO>> Add(ReadingCreateDTO readingCreateDTO)
         {
             var customer = await _customerRepository.GetById(readingCreateDTO.CustomerId);
@@ -38,6 +39,7 @@ namespace AboneTakip.Business.Concrete
             return new DataResult<ReadingDTO>(ResultStatus.Success, "Customer's reading successfully added.", readingDto);
         }
 
+
         public async Task<IResult> Delete(Guid id)
         {
             var reading = await _readingRepository.GetById(id);
@@ -52,6 +54,7 @@ namespace AboneTakip.Business.Concrete
             return new Result(ResultStatus.Success, $"{reading.Id} reading succesfully deleted.");
         }
 
+
         public async Task<IDataResult<List<ReadingDTO>>> GetAll()
         {
             var readings = await _readingRepository.GetAll();
@@ -65,6 +68,7 @@ namespace AboneTakip.Business.Concrete
 
             return new DataResult<List<ReadingDTO>>(ResultStatus.Success, readingDtos);
         }
+
 
         public async Task<IDataResult<ReadingDTO>> GetCustomerLastReading(Guid customerId)
         {
@@ -82,8 +86,9 @@ namespace AboneTakip.Business.Concrete
 
             var readingDto = _mapper.Map<ReadingDTO>(customer.Readings.OrderByDescending(x => x.CreatedDate).First());
 
-            return new DataResult<ReadingDTO>(ResultStatus.Error, readingDto);
+            return new DataResult<ReadingDTO>(ResultStatus.Success, readingDto);
         }
+
 
         public async Task<IDataResult<List<ReadingDTO>>> GetCustomerReadings(Guid customerId)
         {
@@ -104,6 +109,7 @@ namespace AboneTakip.Business.Concrete
             return new DataResult<List<ReadingDTO>>(ResultStatus.Success, readingDtos);
         }
 
+
         public async Task<IDataResult<List<ReadingDTO>>> GetCustomerNotInvoicedReadings(Guid customerId)
         {
             var customer = await _customerRepository.GetById(customerId);
@@ -123,6 +129,7 @@ namespace AboneTakip.Business.Concrete
             return new DataResult<List<ReadingDTO>>(ResultStatus.Success, readingDtos);
         }
 
+
         public async Task<IDataResult<ReadingDTO>> Update(ReadingUpdateDTO readingUpdateDTO)
         {
             var reading = await _readingRepository.GetById(readingUpdateDTO.Id);
@@ -140,6 +147,20 @@ namespace AboneTakip.Business.Concrete
             var updatedReading = _mapper.Map<ReadingDTO>(updateReading);
 
             return new DataResult<ReadingDTO>(ResultStatus.Success, "Reading succesfully updated.", updatedReading);
+        }
+
+        public async Task<IDataResult<ReadingDTO>> GetById(Guid id)
+        {
+            var reading = await _readingRepository.GetById(id);
+
+            if (reading == null)
+            {
+                return new DataResult<ReadingDTO>(ResultStatus.Error, "Reading not found.", null);
+            }
+
+            var readingDto = _mapper.Map<ReadingDTO>(reading);
+
+            return new DataResult<ReadingDTO>(ResultStatus.Success, readingDto);
         }
     }
 }

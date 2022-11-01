@@ -11,6 +11,7 @@ namespace AboneTakip.Business.Abstract
     public interface IReadingService
     {
         Task<IDataResult<List<ReadingDTO>>> GetAll();
+        Task<IDataResult<ReadingDTO>> GetById(Guid id);
         Task<IDataResult<List<ReadingDTO>>> GetCustomerReadings(Guid customerId);
         Task<IDataResult<ReadingDTO>> GetCustomerLastReading(Guid customerId);
         Task<IDataResult<List<ReadingDTO>>> GetCustomerNotInvoicedReadings(Guid customerId);

@@ -4,16 +4,18 @@ using AboneTakip.DataAccess.EntitiyFramework.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AboneTakip.DataAccess.Database.Migrations
+namespace AboneTakip.DataAccess.DataAccess.Migrations
 {
     [DbContext(typeof(AboneTakipDbContext))]
-    partial class AboneTakipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221101100334_Fifth")]
+    partial class Fifth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
