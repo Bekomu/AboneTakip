@@ -13,7 +13,14 @@ namespace AboneTakip.Business.Concrete
 {
     public class RateOfExchangeService : IRateOfExchangeService
     {
-        private const string URL = "https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S-TP.DK.EUR.S-TP.DK.GBP.S&startDate=31-10-2022&endDate=31-10-2022&type=json&key=XXXXXXXX";
+        private const string mainURL = "https://evds2.tcmb.gov.tr/service/evds/series=TP.DK.USD.S-TP.DK.EUR.S-TP.DK.GBP.S&";
+
+        // "startDate=31-10-2022&endDate=31-10-2022"
+        string middleURL;
+
+        private const string endURL = "&type=json&key=";
+
+        private const string EVDS_API_KEY = "XXXXXXX";  // key which is EVDS gives you...
 
         string USDTL, EURTL, GBPTL;
 
@@ -22,13 +29,15 @@ namespace AboneTakip.Business.Concrete
 
         public decimal GetRateOfExchange(int customerCurrencyId)
         {
+            string rateOfExchangeResultDate = DateTime.Now.AddDays(-2).ToString("dd-MM-yyyy");
+            middleURL = $"startDate={rateOfExchangeResultDate}&endDate={rateOfExchangeResultDate}";
+
             try
             {
                 client = new HttpClient();
-                client.BaseAddress = new Uri(URL);
+                client.BaseAddress = new Uri(mainURL + middleURL + endURL + EVDS_API_KEY);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 response = client.GetAsync(client.BaseAddress).Result;
-
             }
             catch (Exception)
             {
