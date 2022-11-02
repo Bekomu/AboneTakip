@@ -25,6 +25,7 @@ namespace AboneTakip.API.Extensions
             services.AddScoped<IVolumetricService, VolumetricService>();
 
             services.AddScoped<IEnergyPriceService, EnergyPriceService>();
+            services.AddScoped<IRateOfExchangeService, RateOfExchangeService>();
         }
 
         public static IServiceCollection AddCustomFluentValidation(this IServiceCollection services)

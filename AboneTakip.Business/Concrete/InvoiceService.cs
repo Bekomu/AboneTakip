@@ -3,6 +3,7 @@ using AboneTakip.Business.Abstract;
 using AboneTakip.Core.Enums;
 using AboneTakip.DataAccess.Abstract;
 using AboneTakip.DTOs.Invoices;
+using AboneTakip.DTOs.Volumetrics;
 using AboneTakip.Entity.Concrete;
 using AutoMapper;
 using System;
@@ -21,8 +22,9 @@ namespace AboneTakip.Business.Concrete
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
         private readonly IEnergyPriceService _energyPriceService;
+        private readonly IRateOfExchangeService _rateOfExchangeService;
 
-        public InvoiceService(IInvoiceRepository invoiceRepository, IReadingRepository readingRepository, IVolumetricRepository volumetricRepository, ICustomerRepository customerRepository, IMapper mapper, IEnergyPriceService energyPriceService)
+        public InvoiceService(IInvoiceRepository invoiceRepository, IReadingRepository readingRepository, IVolumetricRepository volumetricRepository, ICustomerRepository customerRepository, IMapper mapper, IEnergyPriceService energyPriceService, IRateOfExchangeService rateOfExchangeService)
         {
             _invoiceRepository = invoiceRepository;
             _readingRepository = readingRepository;
@@ -30,6 +32,7 @@ namespace AboneTakip.Business.Concrete
             _customerRepository = customerRepository;
             _mapper = mapper;
             _energyPriceService = energyPriceService;
+            _rateOfExchangeService = rateOfExchangeService;
         }
 
 
@@ -63,6 +66,7 @@ namespace AboneTakip.Business.Concrete
         public async Task<IDataResult<InvoiceDTO>> AddByReading(InvoiceSpecificReadingCreateDTO invoiceSpecificReadingCreateDTO)
         {
             var reading = await _readingRepository.GetById(invoiceSpecificReadingCreateDTO.ReadingId);
+            var customer = reading.Customer;
 
             if (reading == null)
             {
@@ -73,13 +77,49 @@ namespace AboneTakip.Business.Concrete
                 return new DataResult<InvoiceDTO>(ResultStatus.Error, "You are trying to invoice which is Reading invoiced.", null);
             }
 
-            InvoiceDTO invoiceDto = await CreateInvoiceByReading(invoiceSpecificReadingCreateDTO, reading);
+            var currentRateOfExchange = _rateOfExchangeService.GetRateOfExchange((int)customer.Currency);
+            if (currentRateOfExchange == 0m)
+            {
+                return new DataResult<InvoiceDTO>(ResultStatus.Error, "Error occured when calling EVDS Rate of Exchange system. Please try again later", null);
+            }
+
+            InvoiceDTO invoiceDto = await CreateInvoiceByReading(invoiceSpecificReadingCreateDTO, reading, currentRateOfExchange);
 
             var invoice = _mapper.Map<Invoice>(invoiceDto);
             await _invoiceRepository.Add(invoice);
             var invoiceDtoResult = _mapper.Map<InvoiceDTO>(invoice);
 
             return new DataResult<InvoiceDTO>(ResultStatus.Success, invoiceDto);
+        }
+
+
+        public async Task<IDataResult<InvoiceDTO>> AddByVolumetricBuy(InvoiceVolumetricBuyCreateDTO invoiceVolumetricBuyCreateDTO)
+        {
+            var volumetric = await _volumetricRepository.GetById(invoiceVolumetricBuyCreateDTO.VolumetricId);
+            var customer = volumetric.Customer;
+
+            if (volumetric == null)
+            {
+                return new DataResult<InvoiceDTO>(ResultStatus.Error, "Volumetric not found.", null);
+            }
+            if (volumetric.IsInvoiced == true)
+            {
+                return new DataResult<InvoiceDTO>(ResultStatus.Error, "You are trying to invoice which is Preload invoiced.", null);
+            }
+
+            var currentRateOfExchange = _rateOfExchangeService.GetRateOfExchange((int)customer.Currency);
+            if (currentRateOfExchange == 0m)
+            {
+                return new DataResult<InvoiceDTO>(ResultStatus.Error, "Error occured when calling EVDS Rate of Exchange system. Please try again later", null);
+            }
+
+            InvoiceDTO invoiceDto = await CreateInvoiceByVolumetricPreload(volumetric, currentRateOfExchange);
+
+            var invoice = _mapper.Map<Invoice>(invoiceDto);
+            await _invoiceRepository.Add(invoice);
+            var invoiceDtoResult = _mapper.Map<InvoiceDTO>(invoice);
+
+            return new DataResult<InvoiceDTO>(ResultStatus.Success, invoiceDtoResult);
         }
 
 
@@ -104,14 +144,18 @@ namespace AboneTakip.Business.Concrete
 
             var toBeInvoicedReadings = new List<Invoice>();
             var invoicedReadingsDto = new List<InvoiceDTO>();
+            var currentRateOfExchange = _rateOfExchangeService.GetRateOfExchange((int)customer.Currency);
+            if (currentRateOfExchange == 0m)
+            {
+                return new DataResult<List<InvoiceDTO>>(ResultStatus.Error, "Error occured when calling EVDS Rate of Exchange system. Please try again later", null);
+            }
 
             foreach (var reading in notInvoicedReadings)
             {
                 var totalUsage = reading.LastIndex - reading.FirstIndex;
-                var currentCurrencyValue = 1m; // customer ın para biriminin bugünkü tl karşılığı gelecek.
-                var currentEnergyPrice = await _energyPriceService.GetEnergyPriceToday() / currentCurrencyValue;
+                var currentEnergyPrice = await _energyPriceService.GetEnergyPriceToday() / currentRateOfExchange;
                 var customerTaxRate = (int)customer.KDVRate;
-                var totalInvoiceWithTaxes = totalUsage * currentCurrencyValue * currentEnergyPrice * (1 + ((decimal)customerTaxRate / 100));
+                var totalInvoiceWithTaxes = totalUsage * currentEnergyPrice * (1 + ((decimal)customerTaxRate / 100));
                 reading.IsInvoiced = true;
                 await _readingRepository.Update(reading);
 
@@ -132,16 +176,6 @@ namespace AboneTakip.Business.Concrete
             }
 
             return new DataResult<List<InvoiceDTO>>(ResultStatus.Success, invoicedReadingsDto);
-        }
-
-
-        public Task<IDataResult<List<InvoiceDTO>>> AddByVolumetricBuy(InvoiceAllReadingsCreateDTO invoiceCreateDTO)
-        {
-            // TODO : volumetric satın alıma göre hesaplama yapılıp fatura oluşturulacak.
-
-
-
-            return null;
         }
 
 
@@ -180,13 +214,33 @@ namespace AboneTakip.Business.Concrete
         }
 
 
-        private async Task<InvoiceDTO> CreateInvoiceByReading(InvoiceSpecificReadingCreateDTO invoiceSpecificReadingCreateDTO, Reading reading)
+        private async Task<InvoiceDTO> CreateInvoiceByVolumetricPreload(Volumetric volumetric, decimal currentRateOfExchange)
+        {
+            var volumetricPreload = volumetric.PreloadVolume;
+            var currentEnergyPrice = await _energyPriceService.GetEnergyPriceToday() / currentRateOfExchange;
+            var customerTaxRate = (int)volumetric.Customer.KDVRate;
+            var totalInvoiceWithTaxes = volumetricPreload * currentEnergyPrice * (1 + ((decimal)customerTaxRate / 100));
+            volumetric.IsInvoiced = true;
+            await _volumetricRepository.Update(volumetric);
+
+            var invoiceDto = new InvoiceDTO()
+            {
+                CustomerId = volumetric.Customer.Id,
+                VolumetricPreload = volumetricPreload,
+                FirstReading = DateTime.Now,
+                LastReading = DateTime.Now,
+                InvoiceAmount = totalInvoiceWithTaxes,
+            };
+            return invoiceDto;
+        }
+
+
+        private async Task<InvoiceDTO> CreateInvoiceByReading(InvoiceSpecificReadingCreateDTO invoiceSpecificReadingCreateDTO, Reading reading, decimal currentRateOfExchange)
         {
             var totalUsage = reading.LastIndex - reading.FirstIndex;
-            var currentCurrencyValue = 1m; // customer ın para biriminin bugünkü tl karşılığı gelecek.
-            var currentEnergyPrice = await _energyPriceService.GetEnergyPriceToday() / currentCurrencyValue;
+            var currentEnergyPrice = await _energyPriceService.GetEnergyPriceToday() / currentRateOfExchange;
             var customerTaxRate = (int)reading.Customer.KDVRate;
-            var totalInvoiceWithTaxes = totalUsage * currentCurrencyValue * currentEnergyPrice * (1 + ((decimal)customerTaxRate / 100));
+            var totalInvoiceWithTaxes = totalUsage * currentEnergyPrice * (1 + ((decimal)customerTaxRate / 100));
             reading.IsInvoiced = true;
             await _readingRepository.Update(reading);
 
@@ -200,7 +254,5 @@ namespace AboneTakip.Business.Concrete
             };
             return invoiceDto;
         }
-
-
     }
 }

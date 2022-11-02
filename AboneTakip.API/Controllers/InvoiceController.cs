@@ -92,6 +92,24 @@ namespace AboneTakip.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost("CreateInvoiceByVolumetricPreload")]
+        public async Task<IActionResult> CreateInvoiceByVolumetricPreload(InvoiceVolumetricBuyCreateDTO invoiceVolumetricBuyCreateDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _invoiceService.AddByVolumetricBuy(invoiceVolumetricBuyCreateDTO);
+
+            if (result.ResultStatus != ResultStatus.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
         [HttpPut("UpdateInvoice")]
         public async Task<IActionResult> UpdateInvoice(InvoiceUpdateDTO invoiceUpdateDTO)
         {
