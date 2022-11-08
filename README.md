@@ -16,3 +16,7 @@ EVDS'den gelen JSON datayı ayrıştırarak anlık olarak faturası kesilen abon
 
 
 Uygulamayı çalıştırmak için sadece database connection stringini düzeltmeniz ve update-database komutunu çalıştırmanız yeterlidir. 
+
+----
+
+![image](https://user-images.githubusercontent.com/97511430/200561610-a5042b88-2767-43ce-9d2b-cd6d6efa670e.png)
