@@ -1,5 +1,5 @@
 # AboneTakip
-.NET 6.0, EntityFrameworkCore, CodeFirst, Generic Repository Pattern, MSSQL, AutoMapper, FluentValidation gibi teknolojilerin/geliştirme yöntemlerinin  kullanıldığı bir Katmanlı Mimari WEB API projesidir. Bu proje abonelerinizi takip edebileceğiniz,  tüketim veya önyükleme değerlerine göre fatura kesebileceğiniz bir Abone Takip uygulamasıdır. 
+.NET 6.0, EntityFrameworkCore, CodeFirst, Generic Repository Pattern, MSSQL, AutoMapper, Autofac, FluentValidation gibi teknolojilerin/geliştirme yöntemlerinin  kullanıldığı bir Katmanlı Mimari WEB API projesidir. Bu proje abonelerinizi takip edebileceğiniz,  tüketim veya önyükleme değerlerine göre fatura kesebileceğiniz bir Abone Takip uygulamasıdır. 
 
 
 ----
